@@ -18,11 +18,11 @@ in
     ];
   };
 
-  # services.xserver.desktopManager.phosh = {
-  #   enable = true;
-  #   user = defaultUserName;
-  #   group = "users";
-  # };
+  services.xserver.desktopManager.phosh = {
+    enable = true;
+    user = defaultUserName;
+    group = "users";
+  };
 
   programs.calls.enable = true;
   hardware.sensor.iio.enable = true;

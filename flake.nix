@@ -23,10 +23,29 @@
     in
     {
 
+      overlays.default = final: prev: {
+
+        # TODO remove once PR hits nixpkgs: https://github.com/NixOS/nixpkgs/pull/183913
+        phosh = prev.phosh.overrideAttrs (oldAttrs: {
+          patches = [
+            (prev.fetchpatch {
+              url = "https://gitlab.gnome.org/World/Phosh/phosh/-/commit/16b46e295b86cbf1beaccf8218cf65ebb4b7a6f1.patch";
+              sha256 = "sha256-Db1OEdiI1QBHGEBs1Coi7LTF9bCScdDgxmovpBdIY/g=";
+            })
+            (prev.fetchpatch {
+              url = "https://gitlab.gnome.org/World/Phosh/phosh/-/commit/b864653df50bfd8f34766fc6b37a3bf32cfbdfa4.patch";
+              sha256 = "sha256-YCw3tGk94NAa6PPTmA1lCJVzzi9GC74BmvtTcvuHPh0=";
+            })
+          ];
+        });
+
+      };
+
       nixosConfigurations.pinephone = nixosSystem {
         system = "aarch64-linux";
         modules = [
           { _module.args = { inherit inputs; }; }
+          { nixpkgs.overlays = [ inputs.self.overlays.default ]; }
           (import "${inputs.mobile-nixos}/lib/configuration.nix" {
             device = "pine64-pinephone";
           })
@@ -38,6 +57,7 @@
         system = "x86_64-linux";
         modules = [
           { _module.args = { inherit inputs; }; }
+          { nixpkgs.overlays = [ inputs.self.overlays.default ]; }
           (import "${inputs.mobile-nixos}/lib/configuration.nix" {
             device = "uefi-x86_64";
           })
