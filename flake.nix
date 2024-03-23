@@ -24,8 +24,8 @@
 
       nixosConfigurations.pinephone = nixosSystem {
         system = "aarch64-linux";
+        specialArgs = { inherit inputs; };
         modules = [
-          { _module.args = { inherit inputs; }; }
           (import "${inputs.mobile-nixos}/lib/configuration.nix" {
             device = "pine64-pinephone";
           })
@@ -35,8 +35,8 @@
 
       nixosConfigurations.pinephone-vm = nixosSystem {
         system = "x86_64-linux";
+        specialArgs = { inherit inputs; };
         modules = [
-          { _module.args = { inherit inputs; }; }
           (import "${inputs.mobile-nixos}/lib/configuration.nix" {
             device = "uefi-x86_64";
           })
