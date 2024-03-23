@@ -63,31 +63,25 @@
 
         apps.flash-pinephone = {
           type = "app";
-          program = toString
-            (pkgs.writers.writeBash "flash-pinephone" ''
-              set -e
-              PATH=$PATH:"${inputs.self.packages.${system}.mobile-nixos-flasher}/bin"
-              mobile-nixos-flasher \
-                --manufacturer Pine64 \
-                --product "Pinephone (A64)" \
-                --package .#pinephone-disk-image \
-                --file mobile-nixos.img
-            '');
+          program = toString (pkgs.writeShellScript "flash-pinephone" ''
+            ${self.packages.${system}.mobile-nixos-flasher}/bin/mobile-nixos-flasher \
+              --manufacturer Pine64 \
+              --product "Pinephone (A64)" \
+              --package .#pinephone-disk-image \
+              --file mobile-nixos.img
+          '');
         };
 
         apps.flash-pinephone-boot = {
           type = "app";
-          program = toString
-            (pkgs.writers.writeBash "run" ''
-              set -e
-              PATH=$PATH:"${inputs.self.packages.${system}.mobile-nixos-flasher}/bin"
-              mobile-nixos-flasher \
-                --manufacturer Pine64 \
-                --product "Pinephone (A64)" \
-                --partition 3 \
-                --package .#pinephone-boot-partition \
-                --file mobile-nixos-boot.img
-            '');
+          program = toString (pkgs.writeShellScript "flash-pinephone-boot" ''
+            ${self.packages.${system}.mobile-nixos-flasher}/bin/mobile-nixos-flasher \
+              --manufacturer Pine64 \
+              --product "Pinephone (A64)" \
+              --partition 3 \
+              --package .#pinephone-boot-partition \
+              --file mobile-nixos-boot.img
+          '');
         };
 
       }));
