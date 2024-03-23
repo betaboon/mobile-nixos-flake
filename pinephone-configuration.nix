@@ -18,6 +18,11 @@ in
     ];
   };
 
+  mobile.beautification = {
+    silentBoot = lib.mkDefault true;
+    splash = lib.mkDefault true;
+  };
+
   services.xserver.desktopManager.phosh = {
     enable = true;
     user = defaultUserName;
@@ -25,12 +30,14 @@ in
   };
 
   programs.calls.enable = true;
-  hardware.sensor.iio.enable = true;
 
-  environment.systemPackages = [
-    pkgs.chatty
-    pkgs.kgx
-    pkgs.megapixels
+  environment.systemPackages = with pkgs; [
+    chatty # IM and SMS
+    epiphany # Web browser
+    gnome-console # Terminal
+    megapixels # Camera
   ];
+
+  hardware.sensor.iio.enable = true;
 
 }
